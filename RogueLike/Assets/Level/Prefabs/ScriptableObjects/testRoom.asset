@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb0f31567d76714a939f90322de2711, type: 3}
+  m_Name: testRoom
+  m_EditorClassIdentifier: 
+  GroundTiles:
+  - {fileID: 11400000, guid: da1676abda1a3994cafc4f2f95b813ff, type: 2}
+  - {fileID: 11400000, guid: f27f00878db703f44a2e4749fcc00f32, type: 2}

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78dee85534c34c84b8be48e7c6e05482, type: 3}
+  m_Name: DefaultStatus
+  m_EditorClassIdentifier: 
+  Stats:
+  - <Name>k__BackingField: Speed
+    BaseValue: 10
+    Multiplier: 1
+  DepletableStats: []
+  Skills:
+  - {fileID: 5918777093668594793, guid: 0417076bd6b511a41b1c00e08aa17dac, type: 3}
