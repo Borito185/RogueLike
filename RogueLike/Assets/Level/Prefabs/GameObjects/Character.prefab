@@ -175,7 +175,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   Preset: {fileID: 11400000, guid: 9d1b5dd0c89a81a4fbe3b152656038e4, type: 2}
-  <Name>k__BackingField: 
+  Name: 
   MovementSkill:
     Skill: {fileID: 11400000, guid: d36e04d0770b2344099c5a46c07c95f2, type: 2}
   PrimarySkill:
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0.02
   clientAuthority: 1
   sendInterval: 0.01
   syncPosition: 1
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0.02
   target: {fileID: 96157594}
   clientAuthority: 1
   syncVelocity: 1

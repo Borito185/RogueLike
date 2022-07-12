@@ -7,8 +7,7 @@ namespace Assets.Code.Stats
     [Serializable]
     public struct DepletableStatValue : INameable
     {
-        [field:SerializeField]
-        public string Name { get; set; }
+        public string Name;
         public StatValue CurrentValue { get; }
         public StatValue MaxValue { get; }
 
@@ -18,5 +17,7 @@ namespace Assets.Code.Stats
             MaxValue = new(name + "_max");
             CurrentValue = new(name + "_current");
         }
+
+        public string GetName() => Name;
     }
 }

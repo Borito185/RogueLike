@@ -13,12 +13,14 @@ namespace Assets.Code.Stats
             BaseValue = baseValue;
             Multiplier = multiplier;
         }
+
         [field: SerializeField]
-        public string Name { get; set; }
+        public string Name;
 
         public float BaseValue;
 
         public float Multiplier;
         public float Value => BaseValue * Multiplier;
+        public string GetName() => Name;
     }
 }

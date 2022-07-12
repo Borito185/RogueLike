@@ -11,7 +11,7 @@ namespace Assets.Code.Util
         {
             foreach (var item in list)
             {
-                if (item.Name == name)
+                if (item.GetName() == name)
                 {
                     return item;
                 }

@@ -17,7 +17,7 @@ namespace Assets.Code.Player
         [SerializeField]
         private Rigidbody2D _body;
 
-        public override void OnStartClient()
+        public override void OnStartLocalPlayer()
         {
             _player = GetComponent<Player>();
             _body = GetComponent<Rigidbody2D>();

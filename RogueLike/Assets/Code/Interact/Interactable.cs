@@ -6,18 +6,15 @@ using UnityEngine.Events;
 
 namespace Assets.Code.Interact
 {
+    [RequireComponent(typeof(Collider2D))]
     public class Interactable : MonoBehaviour
     {
         public static Interactable Closest { get; private set; }
-        public PolygonCollider2D ThisCollider2D;
 
         public UnityEvent OnInteract;
+        public UnityEvent OnIsClosest;
+        public UnityEvent OnNotClosest;
 
-        private void Awake()
-        {
-            if (ThisCollider2D == null && !TryGetComponent(out ThisCollider2D))
-                Debug.LogError("No collider found");
-        }
         private void OnTriggerStay2D(Collider2D collider)
         {
             if (!IsLocalPlayer(collider) || Closest == this || !IsCloserToCollider(collider))
@@ -26,14 +23,16 @@ namespace Assets.Code.Interact
             SetThisAsClosest();
         }
 
-        private void OnTriggerExit2D()
+        private void OnTriggerExit2D(Collider2D collider)
         {
+            if (!IsLocalPlayer(collider)) return;
+
             if (Closest == this)
                 RemoveAsClosest();
         }
         public float DistanceToCollider(Collider2D collider)
         {
-            Vector3 offset = ThisCollider2D.bounds.center - collider.bounds.center;
+            Vector3 offset = transform.position - collider.transform.position;
             //offset on z axis isn't important
             offset.z = 0;
             //double y for isometric compensation ()
@@ -53,17 +52,15 @@ namespace Assets.Code.Interact
                 Closest.RemoveAsClosest();
             Closest = this;
             if (InputManager.TryGetInstance(out InputManager instance))
-            {
                 instance.Interact.OnValueSet += HandleInteract;
-            }
+            OnIsClosest.Invoke();
         }
         public void RemoveAsClosest()
         {
             Closest = null;
             if (InputManager.TryGetInstance(out InputManager instance))
-            {
                 instance.Interact.OnValueSet -= HandleInteract;
-            }
+            OnNotClosest.Invoke();
         }
         private void HandleInteract(object sender, EventValueEventArgs<bool> e)
         {
@@ -72,11 +69,5 @@ namespace Assets.Code.Interact
                 OnInteract.Invoke();
             }
         }
-
-        public void WriteToConsole(string text)
-        {
-            print(text);
-        }
-        
     }
 }

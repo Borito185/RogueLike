@@ -1,5 +1,6 @@
 ﻿using Assets.Code.Networking;
 using Mirror;
+using Steamworks;
 using UnityEngine;
 
 namespace Assets.Code
@@ -12,7 +13,6 @@ namespace Assets.Code
         public void StartGame()
         {
             NetworkManager.singleton.ServerChangeScene(GameScene);
-
         }
         public void ExitGame()
         {

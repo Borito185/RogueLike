@@ -9,23 +9,21 @@ namespace Assets.Code.Util.MonoBehaviours
         public float DurationInSeconds;
         public UnityEvent Event;
         private Coroutine _activeCoroutine;
+        private bool _isWaiting;
+        private float _startTime;
+
+        private bool DurationIsOver => _startTime + DurationInSeconds <= Time.time;
         public void StartWaiting()
         {
-            if (_activeCoroutine != null)
-                StopCoroutine(_activeCoroutine);
-
-            _activeCoroutine = StartCoroutine(Wait());
+            _isWaiting = true;
+            _startTime = Time.time;
         }
 
-        public IEnumerator Wait()
+        private void Update()
         {
-            if (DurationInSeconds > 0)
-            {
-                float timeWhenEvent = Time.time + DurationInSeconds;
-                while (Time.time < timeWhenEvent)
-                    yield return null;
-            }
-
+            if (!_isWaiting || !DurationIsOver)
+                return;
+            _isWaiting = false;
             Event.Invoke();
         }
     }

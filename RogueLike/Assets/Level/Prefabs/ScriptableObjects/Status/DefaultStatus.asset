@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultStatus
   m_EditorClassIdentifier: 
   Stats:
-  - <Name>k__BackingField: Speed
+  - Name: Speed
     BaseValue: 10
     Multiplier: 1
   DepletableStats: []

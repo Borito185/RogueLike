@@ -12,15 +12,13 @@ namespace Assets.Code.Stats
         [SerializeField]
         private StatusPreset Preset;
 
-        [field:SerializeField, SyncVar]
-        public string Name { get; set; }
+        [SyncVar]
+        public string Name;
+        public string GetName() => Name;
 
-        [ShowInInspector] 
+
         public readonly SyncList<DepletableStatValue> DepletableStats = new();
-
-        [ShowInInspector]
         public readonly SyncList<StatValue> Stats = new();
-
         public readonly SyncList<SkillBase> Skills = new();
 
         [SyncVar]
@@ -55,7 +53,13 @@ namespace Assets.Code.Stats
         /// <summary>
         /// init status in OnStartServer, else clients wouldn't sync
         /// </summary>
-        public override void OnStartServer()
+        public override void OnStartLocalPlayer()
+        {
+            cmdInitializeFromPreset();
+        }
+
+        [Command]
+        public void cmdInitializeFromPreset()
         {
             InitializeFromPreset(Preset);
         }
