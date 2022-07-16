@@ -17,5 +17,24 @@ MonoBehaviour:
     BaseValue: 10
     Multiplier: 1
   DepletableStats: []
-  Skills:
-  - {fileID: 5918777093668594793, guid: 0417076bd6b511a41b1c00e08aa17dac, type: 3}
+  Skills: []
+  MovementSkill:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  PrimarySkill:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  SecondarySkill:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  TertiarySkill:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

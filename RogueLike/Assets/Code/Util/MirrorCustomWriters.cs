@@ -2,48 +2,35 @@
 using Mirror;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Assets.Code.Util
 {
     public static class MirrorCustomWriters
     {//may not work
-        public static void WriteSkillBase(this NetworkWriter writer, SkillBase value)
+        private static void WriteAssetReferenceT<T>(NetworkWriter writer, AssetReferenceT<T> value) where T : Object
         {
-            WriteScriptableObject(writer, value);
+            writer.WriteString(value.AssetGUID);
+        }
+        private static AssetReferenceT<T> ReadAssetReferenceT<T>(NetworkReader reader) where T : Object
+        {
+            return new(reader.ReadString());
         }
 
-        public static SkillBase ReadSkillBase(this NetworkReader reader)
-        {
-            return ReadScriptableObject<SkillBase>(reader);
-        }
-        public static void WriteActiveSkillBase(this NetworkWriter writer, ActiveSkillBase value)
-        {
-            WriteScriptableObject(writer, value);
-        }
+        public static void WriteSkillBase(this NetworkWriter writer, AssetReferenceT<SkillBase> value) =>
+            WriteAssetReferenceT(writer, value);
 
-        public static ActiveSkillBase ReadActiveSkillBase(this NetworkReader reader)
-        {
-            return ReadScriptableObject<ActiveSkillBase>(reader);
-        }
-        public static void WritePassiveSkillBase(this NetworkWriter writer, PassiveSkillBase value)
-        {
-            WriteScriptableObject(writer, value);
-        }
+        public static AssetReferenceT<SkillBase> ReadSkillBase(this NetworkReader reader) =>
+            ReadAssetReferenceT<SkillBase>(reader);
+        public static void WriteActiveSkillBase(this NetworkWriter writer, AssetReferenceT<ActiveSkillBase> value) =>
+            WriteAssetReferenceT(writer, value);
 
-        public static PassiveSkillBase ReadPassiveSkillBase(this NetworkReader reader)
-        {
-            return ReadScriptableObject<PassiveSkillBase>(reader);
-        }
+        public static AssetReferenceT<ActiveSkillBase> ReadActiveSkillBase(this NetworkReader reader) =>
+            ReadAssetReferenceT<ActiveSkillBase>(reader);
+        public static void WritePassiveSkillBase(this NetworkWriter writer, AssetReferenceT<PassiveSkillBase> value) =>
+            WriteAssetReferenceT(writer, value);
 
-        private static void WriteScriptableObject<T>(NetworkWriter writer, T value, string prefix = "Skills") where T : ScriptableObject
-        {
-            string path = value == null ? "" : prefix + value.name;
-            writer.Write(path);
-        }
-        private static T ReadScriptableObject<T>(NetworkReader reader) where T : ScriptableObject
-        {
-            string path = reader.ReadString();
-            return string.IsNullOrEmpty(path) ? null : Resources.Load<T>(path);
-        }
+        public static AssetReferenceT<PassiveSkillBase> ReadPassiveSkillBase(this NetworkReader reader) =>
+            ReadAssetReferenceT<PassiveSkillBase>(reader);
     }
 }

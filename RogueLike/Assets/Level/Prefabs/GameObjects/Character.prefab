@@ -138,7 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _body: {fileID: 0}
+  _body: {fileID: 96157594}
 --- !u!50 &96157594
 Rigidbody2D:
   serializedVersion: 4
@@ -174,16 +174,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  Preset: {fileID: 11400000, guid: 9d1b5dd0c89a81a4fbe3b152656038e4, type: 2}
+  Preset:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   Name: 
   MovementSkill:
-    Skill: {fileID: 11400000, guid: d36e04d0770b2344099c5a46c07c95f2, type: 2}
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   PrimarySkill:
-    Skill: {fileID: 0}
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   SecondarySkill:
-    Skill: {fileID: 0}
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   TertiarySkill:
-    Skill: {fileID: 0}
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!114 &1440521607
 MonoBehaviour:
   m_ObjectHideFlags: 0

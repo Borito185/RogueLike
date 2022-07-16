@@ -1,16 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Assets.Code.Skills;
 using Assets.Code.Util;
 using Mirror;
+using Steamworks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Assets.Code.Stats
 {
     public class Status : NetworkBehaviour, INameable
     {
         [SerializeField]
-        private StatusPreset Preset;
+        private AssetReferenceT<StatusPreset> Preset;
 
         [SyncVar]
         public string Name;
@@ -19,73 +23,76 @@ namespace Assets.Code.Stats
 
         public readonly SyncList<DepletableStatValue> DepletableStats = new();
         public readonly SyncList<StatValue> Stats = new();
-        public readonly SyncList<SkillBase> Skills = new();
+        public readonly SyncList<AssetReferenceT<ActiveSkillBase>> ActiveSkills = new();
+        public readonly SyncList<AssetReferenceT<PassiveSkillBase>> PassiveSkills = new();
+
+        //the string is the assetguid (stored in assetreference) to skill
+        public readonly SyncDictionary<string, SkillCooldown> SkillCooldowns = new();
 
         [SyncVar]
-        public ActiveSkillWrapper MovementSkill;
+        public AssetReferenceT<ActiveSkillBase> MovementSkill;
         [SyncVar]
-        public ActiveSkillWrapper PrimarySkill;
+        public AssetReferenceT<ActiveSkillBase> PrimarySkill;
         [SyncVar]
-        public ActiveSkillWrapper SecondarySkill;
+        public AssetReferenceT<ActiveSkillBase> SecondarySkill;
         [SyncVar]
-        public ActiveSkillWrapper TertiarySkill;
+        public AssetReferenceT<ActiveSkillBase> TertiarySkill;
 
+        
         [Command]
-        public void UseSkill(int skillSlot)
+        public async void UseSkill(SkillSlots skillSlot)
         {
-            switch (skillSlot)
+            AssetReferenceT<ActiveSkillBase> skill = skillSlot switch
             {
-                case 0:
-                    MovementSkill.Use(this); ;
-                    break;
-                case 1:
-                    PrimarySkill.Use(this); ;
-                    break;
-                case 2:
-                    SecondarySkill.Use(this); ;
-                    break;
-                case 3:
-                    TertiarySkill.Use(this); ;
-                    break;
-            }
+                SkillSlots.Movement => MovementSkill,
+                SkillSlots.First => PrimarySkill,
+                SkillSlots.Second => SecondarySkill,
+                SkillSlots.Third => TertiarySkill,
+                _ => null
+            };
+            if (skill == null)
+                return;
+            await UseSkill(skill);
         }
+
+        [Server]
+        private async Task UseSkill(AssetReferenceT<ActiveSkillBase> skillReference)
+        {
+            if (SkillCooldowns.TryGetValue(skillReference.AssetGUID, out SkillCooldown cooldown) && !cooldown.CooldownIsOver())
+                return;
+
+            ActiveSkillBase skill = await skillReference.GetAsset();
+            cooldown = skill.Use(this);
+            SkillCooldowns[skillReference.AssetGUID] = cooldown;
+        }
+
 
         /// <summary>
         /// init status in OnStartServer, else clients wouldn't sync
         /// </summary>
         public override void OnStartLocalPlayer()
         {
-            cmdInitializeFromPreset();
+           // CmdInitialize();
         }
 
         [Command]
-        public void cmdInitializeFromPreset()
+        public async void CmdInitialize()
         {
-            InitializeFromPreset(Preset);
-        }
-        /// <summary>
-        /// Resets the status and initializes it according to given preset
-        /// </summary>
-        /// <param name="preset">preset to init from</param>
-        public virtual void InitializeFromPreset(StatusPreset preset)
-        {
-            if (preset == null)
-                return;
+            var preset = await Preset.GetAsset();
 
-            ResetStatus();
+            if (preset != null)
+            {
+                preset.SetupStatus(this);
+            }
 
-            Stats.AddRange(preset.Stats);
-            DepletableStats.AddRange(preset.DepletableStats);
-            Skills.AddRange(preset.Skills);
+            Preset.ReleaseAsset();
         }
-        /// <summary>
-        /// clears Stats DepletableStats and Skills SyncLists
-        /// </summary>
-        public void ResetStatus()
+        public enum SkillSlots : byte
         {
-            Stats.Clear();
-            DepletableStats.Clear();
-            Skills.Clear();
+            Movement,
+            First,
+            Second,
+            Third
         }
     }
 }
